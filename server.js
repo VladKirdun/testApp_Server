@@ -94,4 +94,35 @@ app.post('/api/addPhoto', urlencodedParser, (req, res) => {
 	});
 });
 
+app.post('/api/delete', urlencodedParser, (req, res) => {
+
+	var dataStr = JSON.stringify(req.body);
+	dataStr = dataStr.slice(2, -6).replace(/\\/g, '') + '}';
+	var dataObj = JSON.parse(dataStr);
+
+	MongoClient.connect(urlDB, { useNewUrlParser: true }, function(err, database) {
+		if(err) throw err;
+
+		const myDB = database.db('ORDERS');
+		const myDBCollection = myDB.collection('orders');
+		var id = dataObj.id;
+
+		myDBCollection.remove({id: id});
+		for(var i = 0; i < orders.length; i++) {
+			if(orders[i].id === id) {
+				orders.splice(i, 1);
+				fs.writeFile("orders.json", JSON.stringify(orders), function(error){
+					if(error) throw error;
+				});
+				break;
+			}
+		}
+		
+		database.close();
+	});
+
+	res.sendStatus(200);
+
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
