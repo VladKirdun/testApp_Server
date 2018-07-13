@@ -4,20 +4,26 @@
 		"address": "г.Минск, ул. Белорусская, 21",
 		"waiting_time": 2,
 		"status": "IN_PROCESS",
-		"photo": ""
+		"photo": "",
+		"lng": "",
+		"lat": ""
 	},
 	{
 		"id": 2,
 		"address": "г.Минск, ул. Толстого, 10",
 		"waiting_time": 4,
 		"status": "IN_PROCESS",
-		"photo": ""
+		"photo": "",
+		"lng": "",
+		"lat": ""
 	},
 	{
 		"id": 3,
 		"address": "г.Минск, ул. Ленина, 17",
 		"waiting_time": 0,
 		"status": "READY",
-		"photo": ""
+		"photo": "",
+		"lng": "",
+		"lat": ""
 	}
 ]

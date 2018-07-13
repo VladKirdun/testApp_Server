@@ -70,6 +70,8 @@ app.post('/api/addPhoto', urlencodedParser, (req, res) => {
 		const myDB = database.db('ORDERS');
 		const myDBCollection = myDB.collection('orders');
 		
+		var latitude = dataObj.latitude;
+		var longitude = dataObj.longitude;
 		var id = dataObj.id;
 		var photo = dataObj.photo;
 		photo = photo.replace(/ /g, '+');
@@ -79,12 +81,16 @@ app.post('/api/addPhoto', urlencodedParser, (req, res) => {
 				orders[i].waiting_time = 0;
 				orders[i].status = "READY";
 				orders[i].photo = photo;
+				orders[i].lng = longitude;
+				orders[i].lat = latitude;
 				fs.writeFile("orders.json", JSON.stringify(orders), function(error){
 					if(error) throw error;
 				});
 				myDBCollection.update({id : id}, {$set: {waiting_time : 0}});
 				myDBCollection.update({id : id}, {$set: {status : "READY"}});
 				myDBCollection.update({id : id}, {$set: {photo : photo}});
+				myDBCollection.update({id : id}, {$set: {lng : longitude}});
+				myDBCollection.update({id : id}, {$set: {lat : latitude}});
 
 	    	res.json(orders[i]);
 			}
