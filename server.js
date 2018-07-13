@@ -43,16 +43,26 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
+	var urlParts = url.parse(req.url, true);
+  var parameters = urlParts.query;
 	MongoClient.connect(urlDB, { useNewUrlParser: true }, function(err, database) {
 		if(err) throw err;
 
 		const myDB = database.db('ORDERS');
 		const myDBCollection = myDB.collection('orders');
 		
-		myDBCollection.find().toArray(function(err, results){
-	    if(err) throw err;
-	    res.json(results);
-	  });
+  	if(JSON.stringify(parameters) === '{}' || parameters.id === '') {
+			myDBCollection.find().toArray(function(err, results){
+		    if(err) throw err;
+		    res.json(results);
+		  });
+		} else {
+			var id = parameters.id;
+			myDBCollection.find({id: Number(id)}).toArray(function(err, results){
+		    if(err) throw err;
+		    res.json(results);
+		  });
+		}
 		
 		database.close();
 	});
