@@ -51,14 +51,14 @@ app.get('/api', (req, res) => {
 		const myDB = database.db('ORDERS');
 		const myDBCollection = myDB.collection('orders');
 		
-  	if(JSON.stringify(parameters) === '{}' || parameters.id === '') {
+  	if(JSON.stringify(parameters) === '{}' || parameters.address === '') {
 			myDBCollection.find().toArray(function(err, results){
 		    if(err) throw err;
 		    res.json(results);
 		  });
 		} else {
-			var id = parameters.id;
-			myDBCollection.find({id: Number(id)}).toArray(function(err, results){
+			var address = parameters.address;
+			myDBCollection.find({address: new RegExp(address,'i')}).toArray(function(err, results){
 		    if(err) throw err;
 		    res.json(results);
 		  });
